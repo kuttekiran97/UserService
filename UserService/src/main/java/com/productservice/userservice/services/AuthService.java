@@ -1,14 +1,13 @@
-package dev.deepak.userservicetestfinal.services;
+package com.productservice.userservice.services;
 
-import dev.deepak.userservicetestfinal.dtos.UserDto;
-import dev.deepak.userservicetestfinal.models.Role;
-import dev.deepak.userservicetestfinal.models.SessionStatus;
-import dev.deepak.userservicetestfinal.models.User;
-import dev.deepak.userservicetestfinal.models.Session;
-import dev.deepak.userservicetestfinal.repositories.SessionRepository;
-import dev.deepak.userservicetestfinal.repositories.UserRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+import com.productservice.userservice.dtos.UserDto;
+import com.productservice.userservice.models.Role;
+import com.productservice.userservice.models.Session;
+import com.productservice.userservice.models.SessionStatus;
+import com.productservice.userservice.models.User;
+import com.productservice.userservice.repositories.SessionRepository;
+import com.productservice.userservice.repositories.UserRepository;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.MacAlgorithm;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -50,13 +49,19 @@ public class AuthService {
             throw new RuntimeException("Wrong password entered");
         }
 
+
+        //1. Solution where we used Random to generate the token
         //Generating the token
         //String token = RandomStringUtils.randomAlphanumeric(30);
 
-        // Create a test key suitable for the desired HMAC-SHA algorithm:
-        MacAlgorithm alg = Jwts.SIG.HS256; //or HS384 or HS256
-        SecretKey key = alg.key().build();
 
+
+        //2.We used JWT library with hardcoded string "hello world" and also we hardcoded the credentials
+//        Create a test key suitable for the desired HMAC-SHA algorithm:
+//        MacAlgorithm alg = Jwts.SIG.HS256; //or HS384 or HS256
+//        SecretKey key = alg.key().build();
+
+        //String message = "Hello World!";
 //        String message = "{\n" +
 //                "  \"email\": \"harsh@scaler.com\",\n" +
 //                "  \"roles\": [\n" +
@@ -65,25 +70,39 @@ public class AuthService {
 //                "  ],\n" +
 //                "  \"expiry\": \"31stJan2024\"\n" +
 //                "}";
-        //JSON -> Key : Value
+        //byte[] content = message.getBytes(StandardCharsets.UTF_8);
+
+        // Create the compact JWS with Normal plain text:
+        //String jws = Jwts.builder().content(content, "text/plain").signWith(key, alg).compact();
+
+
+        // Parse the compact JWS:
+        //content = Jwts.parser().verifyWith(key).build().parseSignedContent(jws).getPayload();
+        //assert message.equals(new String(content, StandardCharsets.UTF_8));
+
+
+
+
+
+        //3.Final solution where we actually created a perfect JWT Token
+
+        // Create a test key suitable for the desired HMAC-SHA algorithm:
+        MacAlgorithm alg = Jwts.SIG.HS256; //or HS384 or HS256
+        SecretKey key = alg.key().build();
+
+        //JSON -> Key : Value   =>message
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("email", user.getEmail());
         jsonMap.put("roles", List.of(user.getRoles()));
         jsonMap.put("createdAt", new Date());
         jsonMap.put("expiryAt", DateUtils.addDays(new Date(), 30));
 
-        //byte[] content = message.getBytes(StandardCharsets.UTF_8);
-
-        // Create the compact JWS:
-        //String jws = Jwts.builder().content(content, "text/plain").signWith(key, alg).compact();
+        // Create the compact JWS with Map:
         String jws = Jwts.builder()
                 .claims(jsonMap)
                 .signWith(key, alg)
                 .compact();
 
-        // Parse the compact JWS:
-        //content = Jwts.parser().verifyWith(key).build().parseSignedContent(jws).getPayload();
-        //assert message.equals(new String(content, StandardCharsets.UTF_8));
 
         Session session = new Session();
         session.setSessionStatus(SessionStatus.ACTIVE);
@@ -148,12 +167,12 @@ public class AuthService {
         }
 
         //JWT Decoding.
-        Jws<Claims> jwsClaims = Jwts.parser().build().parseSignedClaims(token);
-
-        // Map<String, Object> -> Payload object or JSON
-        String email = (String) jwsClaims.getPayload().get("email");
-        List<Role> roles = (List<Role>) jwsClaims.getPayload().get("roles");
-        Date createdAt = (Date) jwsClaims.getPayload().get("createdAt");
+//        Jws<Claims> jwsClaims = Jwts.parser().build().parseSignedClaims(token);
+//
+//        // Map<String, Object> -> Payload object or JSON
+//        String email = (String) jwsClaims.getPayload().get("email");
+//        List<Role> roles = (List<Role>) jwsClaims.getPayload().get("roles");
+//        Date createdAt = (Date) jwsClaims.getPayload().get("createdAt");
 
 //        if (restrictedEmails.contains(email)) {
 //            //reject the token

@@ -1,7 +1,7 @@
-package dev.deepak.userservicetestfinal.services;
+package com.productservice.userservice.services;
 
-import dev.deepak.userservicetestfinal.models.Role;
-import dev.deepak.userservicetestfinal.repositories.RoleRepository;
+import com.productservice.userservice.models.Role;
+import com.productservice.userservice.repositories.RoleRepository;
 import org.springframework.stereotype.Service;
 
 @Service

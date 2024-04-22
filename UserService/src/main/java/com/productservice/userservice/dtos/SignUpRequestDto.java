@@ -1,4 +1,4 @@
-package dev.deepak.userservicetestfinal.dtos;
+package com.productservice.userservice.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,4 +8,5 @@ import lombok.Setter;
 public class SignUpRequestDto {
     private String email;
     private String password;
+
 }

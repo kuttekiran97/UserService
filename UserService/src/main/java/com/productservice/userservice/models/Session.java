@@ -1,4 +1,4 @@
-package dev.deepak.userservicetestfinal.models;
+package com.productservice.userservice.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;

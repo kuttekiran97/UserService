@@ -1,6 +1,6 @@
-package dev.deepak.userservicetestfinal.repositories;
+package com.productservice.userservice.repositories;
 
-import dev.deepak.userservicetestfinal.models.Session;
+import com.productservice.userservice.models.Session;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

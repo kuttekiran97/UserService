@@ -1,4 +1,4 @@
-package dev.deepak.userservicetestfinal.models;
+package com.productservice.userservice.models;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.Entity;

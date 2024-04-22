@@ -1,8 +1,10 @@
-package dev.deepak.userservicetestfinal.controllers;
+package com.productservice.userservice.controllers;
 
-import dev.deepak.userservicetestfinal.dtos.*;
-import dev.deepak.userservicetestfinal.models.SessionStatus;
-import dev.deepak.userservicetestfinal.services.AuthService;
+
+import com.productservice.userservice.dtos.*;
+import com.productservice.userservice.models.SessionStatus;
+import com.productservice.userservice.services.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
     private AuthService authService;
 
     public AuthController(AuthService authService) {
@@ -33,6 +36,7 @@ public class AuthController {
     public ResponseEntity<UserDto> signUp(@RequestBody SignUpRequestDto request) {
         UserDto userDto = authService.signUp(request.getEmail(), request.getPassword());
         return new ResponseEntity<>(userDto, HttpStatus.OK);
+
     }
 
     @PostMapping("/validate")
